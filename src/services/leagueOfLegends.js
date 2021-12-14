@@ -1,5 +1,3 @@
-import { ConstructionOutlined } from '@mui/icons-material'
-
 const axios = require('axios')
 
 const DDRAGON_CDN_URL = 'http://ddragon.leagueoflegends.com/cdn'
@@ -34,6 +32,21 @@ const DIAMOND2_PLUS_TIER = 'd2_plus'
 const PLATINUM_PLUS_TIER = 'platinum_plus'
 const ALL_TIERS = 'all'
 
+// Used to map tier index to a tier letter
+const tiers = [
+    'S+',
+    'S',
+    'S-',
+    'A+',
+    'A',
+    'A-',
+    'B+',
+    'B',
+    'B-',
+    'C+',
+    'C',
+    'C-'
+]
 
 async function pullChampionData(){
     // Get the champion data
@@ -61,6 +74,16 @@ async function GetChampionTierListData(tier, lane){
     console.log(URL)
 
     const response = await axios.get(URL)
+
+    // Convert the data
+    for(let championId in response.data){
+        response.data['cid'][championId]['rank'] = response.data['cid'][championId][0]
+        response.data['cid'][championId]['tier'] = tiers[response.data['cid'][championId][2]-1]
+        response.data['cid'][championId]['winRate'] = response.data['cid'][championId][3] / response.data['cid'][championId][4]
+        response.data['cid'][championId]['pickRate'] = response.data['cid'][championId][4] / response.data['pick']
+        response.data['cid'][championId]['banRate'] = response.data['cid'][championId][6]
+        response.data['cid'][championId]['numGames'] = response.data['cid'][championId][4]
+    }
 
     return response.data
 }

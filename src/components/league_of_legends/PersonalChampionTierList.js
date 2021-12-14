@@ -18,6 +18,8 @@ import {
 } from '../../features/league_of_legends/championsSlice'
 
 import CloseIcon from "@mui/icons-material/Close"
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 
 import {
     ALL_TIERS,
@@ -172,56 +174,68 @@ function PersonalChampionTierList(props){
                 )}
             />
 
-            <Box sx={{mr: 3}} component='span'>
-                <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(TOP_LANE)}>
-                    <img style={{border: selectedRole === TOP_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === 0 ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/top.png'}/>
+            <Box sx={{display: 'flex', alignItems: 'center'}}>
+                <Box sx={{mr: 3}} component='span'>
+                    <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(TOP_LANE)}>
+                        <img style={{border: selectedRole === TOP_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === TOP_LANE ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/top.png'}/>
+                    </Box>
+                    <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(JUNGLE_LANE)}>
+                        <img style={{border: selectedRole === JUNGLE_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === JUNGLE_LANE ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/jungle.png'}/>
+                    </Box>
+                    <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(MIDDLE_LANE)}>
+                        <img style={{border: selectedRole === MIDDLE_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === MIDDLE_LANE ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/mid.png'}/>
+                    </Box>
+                    <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(BOT_LANE)}>
+                        <img style={{border: selectedRole === BOT_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === BOT_LANE ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/bot.png'}/>
+                    </Box>
+                    <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(SUPPORT_LANE)}>
+                        <img style={{border: selectedRole === SUPPORT_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === SUPPORT_LANE ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/supp.png'}/>
+                    </Box>
                 </Box>
-                <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(JUNGLE_LANE)}>
-                    <img style={{border: selectedRole === JUNGLE_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === 1 ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/jungle.png'}/>
-                </Box>
-                <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(MIDDLE_LANE)}>
-                    <img style={{border: selectedRole === MIDDLE_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === 2 ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/mid.png'}/>
-                </Box>
-                <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(BOT_LANE)}>
-                    <img style={{border: selectedRole === BOT_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === 3 ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/bot.png'}/>
-                </Box>
-                <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(SUPPORT_LANE)}>
-                    <img style={{border: selectedRole === SUPPORT_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === 4 ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/supp.png'}/>
-                </Box>
+                <Select autoWidth value={selectedRank} onChange={rankSelected}>
+                    <MenuItem value={PLATINUM_PLUS_TIER}>Platinum+</MenuItem>
+                    <MenuItem value={DIAMOND_PLUS_TIER}>Diamond+</MenuItem>
+                    <MenuItem value={DIAMOND2_PLUS_TIER}>Diamond 2+</MenuItem>
+                    <MenuItem value={MASTER_PLUS_TIER}>Master+</MenuItem>
+                    <MenuItem value={ALL_TIERS}>All Ranks</MenuItem>
+                    <MenuItem value={CHALLENGER_TIER}>Challenger</MenuItem>
+                    <MenuItem value={GRANDMASTER_TIER}>Grandmaster</MenuItem>
+                    <MenuItem value={MASTER_TIER}>Master</MenuItem>
+                    <MenuItem value={DIAMOND_TIER}>Diamond</MenuItem>
+                    <MenuItem value={PLATINUM_TIER}>Platinum</MenuItem>
+                    <MenuItem value={GOLD_TIER}>Gold</MenuItem>
+                    <MenuItem value={SILVER_TIER}>Silver</MenuItem>
+                    <MenuItem value={BRONZE_TIER}>Bronze</MenuItem>
+                    <MenuItem value={IRON_TIER}>Iron</MenuItem>
+                </Select>
             </Box>
-            <Select autoWidth value={selectedRank} onChange={rankSelected}>
-                <MenuItem value={PLATINUM_PLUS_TIER}>Platinum+</MenuItem>
-                <MenuItem value={DIAMOND_PLUS_TIER}>Diamond+</MenuItem>
-                <MenuItem value={DIAMOND2_PLUS_TIER}>Diamond 2+</MenuItem>
-                <MenuItem value={MASTER_PLUS_TIER}>Master+</MenuItem>
-                <MenuItem value={ALL_TIERS}>All Ranks</MenuItem>
-                <MenuItem value={CHALLENGER_TIER}>Challenger</MenuItem>
-                <MenuItem value={GRANDMASTER_TIER}>Grandmaster</MenuItem>
-                <MenuItem value={MASTER_TIER}>Master</MenuItem>
-                <MenuItem value={DIAMOND_TIER}>Diamond</MenuItem>
-                <MenuItem value={PLATINUM_TIER}>Platinum</MenuItem>
-                <MenuItem value={GOLD_TIER}>Gold</MenuItem>
-                <MenuItem value={SILVER_TIER}>Silver</MenuItem>
-                <MenuItem value={BRONZE_TIER}>Bronze</MenuItem>
-                <MenuItem value={IRON_TIER}>Iron</MenuItem>
-            </Select>
 
             <List sx={{width: 1}}>
                 <ListItem sx={{backgroundColor: 'primary.main', borderRadius: 3, marginBottom: 1, display: 'flex'}}>
                     <Grid container>
-                        <Grid item xs={1}>
-                            <Typography sx={{color: 'primary.contrastText'}}>Rank</Typography>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography sx={{display: 'inline', color: 'primary.contrastText'}}>Rank</Typography>
+                            <IconButton><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Image</Typography>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Name</Typography>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Tier</Typography>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography sx={{color: 'primary.contrastText'}}>Win Rate</Typography>
+                        </Grid>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography sx={{color: 'primary.contrastText'}}>Pick Rate</Typography>
+                        </Grid>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography sx={{color: 'primary.contrastText'}}>Ban Rate</Typography>
+                        </Grid>
+                        <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Games</Typography>
                         </Grid>
                     </Grid>
@@ -232,19 +246,28 @@ function PersonalChampionTierList(props){
                     <ListItem sx={{backgroundColor: 'primary.light', borderRadius: 3, marginBottom: 1, display: 'flex'}}>
                         <Grid container>
                             <Grid item xs={1} sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key][0] : ''}</Typography>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['rank'] : ''}</Typography>
                             </Grid>
-                            <Grid item xs={2} sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                            <Grid item xs={1} sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                                 <img style={{maxWidth: 60}} src={champion.image.url}/>
                             </Grid>
-                            <Grid item xs={2} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                            <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                                 <Typography variant="h5" sx={{color: 'primary.contrastText'}}>{champion.name}</Typography>
                             </Grid>
-                            <Grid item xs={2} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? tiers[props.championTierListData['cid'][champion.key][2]-1] : ''}</Typography>
+                            <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['tier'] : ''}</Typography>
                             </Grid>
-                            <Grid item xs={2} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key][5] : ''}</Typography>
+                            <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['winRate'] : ''}</Typography>
+                            </Grid>
+                            <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['pickRate'] : ''}</Typography>
+                            </Grid>
+                            <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['banRate'] : ''}</Typography>
+                            </Grid>
+                            <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['numGames'] : ''}</Typography>
                             </Grid>
                             <Grid item xs></Grid>
                             <Grid item xs={1} sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>

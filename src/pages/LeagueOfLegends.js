@@ -63,7 +63,7 @@ function LeagueOfLegends(){
     return (
         <Box>
             <Grid container spacing={2} padding={5}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                     <Paper sx={{padding: 2}}>
                         <PersonalChampionTierList championData={championData} championTierListData={championTierListData}
                             onRoleChange={(newRole) => handleRoleChange(newRole)}
