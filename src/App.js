@@ -6,9 +6,8 @@ import './App.css';
 import CssBaseline from '@mui/material/CssBaseline'
 
 import {
-  Typography,
-  Grid,
-  ThemeProvider
+  ThemeProvider,
+  Box
 } from '@mui/material'
 
 import {
@@ -40,7 +39,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline/>
       <TopBar/>
-      <LeagueOfLegends/>
+      <Box sx={{marginTop:8}}>
+        <LeagueOfLegends/>
+      </Box>
     </ThemeProvider>
   );
 }

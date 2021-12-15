@@ -1,7 +1,6 @@
 const axios = require('axios')
 
 const DDRAGON_CDN_URL = 'http://ddragon.leagueoflegends.com/cdn'
-const LEAGUE_VERSION = '11.24'
 const DDRAGON_IMG_PATH = '/img/champion/'
 const DDRAGON_CHAMPIONS_PATH = '/data/en_US/champion.json'
 
@@ -48,12 +47,12 @@ const tiers = [
     'C-'
 ]
 
-async function pullChampionData(){
+async function pullChampionData(leagueVersion){
     // Get the champion data
-    let championData = await axios.get(`${DDRAGON_CDN_URL}/${LEAGUE_VERSION}.1${DDRAGON_CHAMPIONS_PATH}`)
+    let championData = await axios.get(`${DDRAGON_CDN_URL}/${leagueVersion}.1${DDRAGON_CHAMPIONS_PATH}`)
     championData = championData.data.data
     for(let key in championData){
-        championData[key].image.url = `${DDRAGON_CDN_URL}/${LEAGUE_VERSION}.1${DDRAGON_IMG_PATH}${championData[key].image.full}`
+        championData[key].image.url = `${DDRAGON_CDN_URL}/${leagueVersion}.1${DDRAGON_IMG_PATH}${championData[key].image.full}`
     }
 
     return championData
@@ -61,11 +60,11 @@ async function pullChampionData(){
 
 // Get a mapping of champion ID to tier list data
 // Data format [rank, PBI, tier_index(0 -> S+, 1 -> S, ...), ?, num_games, ?, ban_rate, rank (best_worldwide), win_rate(best_worldwide), games(best_worldwide), ?]
-async function GetChampionTierListData(tier, lane){
+async function GetChampionTierListData(tier, lane, leagueVersion){
     const parameters = new URLSearchParams({
         lane,
         tier,
-        patch: LEAGUE_VERSION,
+        patch: leagueVersion,
         queue: '420',
         region: 'all'
     })
@@ -79,6 +78,7 @@ async function GetChampionTierListData(tier, lane){
     for(let championId in response.data['cid']){
         response.data['cid'][championId]['rank'] = response.data['cid'][championId][0]
         response.data['cid'][championId]['tier'] = tiers[response.data['cid'][championId][2]-1]
+        response.data['cid'][championId]['tierIndex'] = response.data['cid'][championId][2]
         response.data['cid'][championId]['winRate'] = (response.data['cid'][championId][3] / response.data['cid'][championId][4]) * 100
         response.data['cid'][championId]['pickRate'] = (response.data['cid'][championId][4] / response.data['pick']) * 1000
         response.data['cid'][championId]['banRate'] = response.data['cid'][championId][6]
@@ -89,8 +89,8 @@ async function GetChampionTierListData(tier, lane){
 }
 
 // Get the champion data from the u.gg site
-async function GetChampions(){
-    return (await pullChampionData())
+async function GetChampions(leagueVersion){
+    return (await pullChampionData(leagueVersion))
 }
 
 export {

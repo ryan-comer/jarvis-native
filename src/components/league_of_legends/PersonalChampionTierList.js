@@ -68,8 +68,21 @@ const tiers = [
     'C-'
 ]
 
+// Sorting methods
+const RANK_SORT = 'RANK_SORT'
+const TIER_SORT = 'TIER_SORT'
+const WINRATE_SORT = 'WINRATE_SORT'
+const PICKRATE_SORT = 'PICKRATE_SORT'
+const BANRATE_SORT = 'BANRATE_SORT'
+const GAMES_SORT = 'GAMES_SORT'
+
 function PersonalChampionTierList(props){
     const dispatch = useDispatch()
+
+    // 1 - ascending
+    // -1 - descending
+    const [sortingOrder, setSortingOrder] = useState(1)
+    const [sortingMethod, setSortingMethod] = useState(RANK_SORT)
 
     const [selectedRole, setSelectedRole] = useState(null)
     const [selectedRank, setSelectedRank] = useState(PLATINUM_PLUS_TIER)
@@ -116,15 +129,51 @@ function PersonalChampionTierList(props){
         props.onRoleChange(newRole)
     }
 
+    function setSort(newMethod){
+        if(sortingMethod === newMethod){
+            setSortingOrder(sortingOrder * -1)
+        }else{
+            setSortingMethod(newMethod)
+            setSortingOrder(1)
+        }
+    }
+
     // Function to sort champions based on tier
     function sortChampions(championOne, championTwo){
-        const championOneRank = props.championTierListData['cid'][championOne.key]['rank']
-        const championTwoRank = props.championTierListData['cid'][championTwo.key]['rank']
+        let championOneCriteria = null
+        let championTwoCriteria = null
 
-        if(championOneRank > championTwoRank){
-            return 1
-        }else if(championOneRank < championTwoRank){
-            return -1
+        switch(sortingMethod){
+            case RANK_SORT:
+                championOneCriteria = props.championTierListData['cid'][championOne.key]['rank']
+                championTwoCriteria = props.championTierListData['cid'][championTwo.key]['rank']
+            break
+            case TIER_SORT:
+                championOneCriteria = props.championTierListData['cid'][championOne.key]['tierIndex']
+                championTwoCriteria = props.championTierListData['cid'][championTwo.key]['tierIndex']
+            break
+            case WINRATE_SORT:
+                championOneCriteria = props.championTierListData['cid'][championOne.key]['winRate']
+                championTwoCriteria = props.championTierListData['cid'][championTwo.key]['winRate']
+            break
+            case PICKRATE_SORT:
+                championOneCriteria = props.championTierListData['cid'][championOne.key]['pickRate']
+                championTwoCriteria = props.championTierListData['cid'][championTwo.key]['pickRate']
+            break
+            case BANRATE_SORT:
+                championOneCriteria = props.championTierListData['cid'][championOne.key]['banRate']
+                championTwoCriteria = props.championTierListData['cid'][championTwo.key]['banRate']
+            break
+            case GAMES_SORT:
+                championOneCriteria = props.championTierListData['cid'][championOne.key]['numGames']
+                championTwoCriteria = props.championTierListData['cid'][championTwo.key]['numGames']
+            break
+        }
+
+        if(championOneCriteria > championTwoCriteria){
+            return sortingOrder
+        }else if(championOneCriteria < championTwoCriteria){
+            return (-1 * sortingOrder)
         }else{
             return 0
         }
@@ -215,7 +264,7 @@ function PersonalChampionTierList(props){
                     <Grid container>
                         <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{display: 'inline', color: 'primary.contrastText'}}>Rank</Typography>
-                            <IconButton><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
+                            <IconButton onClick={() => setSort(RANK_SORT)}><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
                         </Grid>
                         <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Image</Typography>
@@ -225,23 +274,29 @@ function PersonalChampionTierList(props){
                         </Grid>
                         <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Tier</Typography>
+                            <IconButton onClick={() => setSort(TIER_SORT)}><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
                         </Grid>
                         <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Win Rate</Typography>
+                            <IconButton onClick={() => setSort(WINRATE_SORT)}><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
                         </Grid>
                         <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Pick Rate</Typography>
+                            <IconButton onClick={() => setSort(PICKRATE_SORT)}><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
                         </Grid>
                         <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Ban Rate</Typography>
+                            <IconButton onClick={() => setSort(BANRATE_SORT)}><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
                         </Grid>
                         <Grid item xs={1} sx={{display: 'flex', alignItems: 'center'}}>
                             <Typography sx={{color: 'primary.contrastText'}}>Games</Typography>
+                            <IconButton onClick={() => setSort(GAMES_SORT)}><ArrowDropDownIcon sx={{display: 'inline', color: 'primary.contrastText'}}/></IconButton>
                         </Grid>
                     </Grid>
                 </ListItem>
                 {props.championTierListData && champions.personalTierListChampions?.slice().sort(sortChampions).filter((champion) => {
-                    return props.championTierListData ? props.championTierListData['cid'][champion.key][0] != 0 : false
+                    return true
+                    //return props.championTierListData ? props.championTierListData['cid'][champion.key][0] != 0 : false
                 }).map((champion) => (
                     <ListItem sx={{backgroundColor: 'primary.light', borderRadius: 3, marginBottom: 1, display: 'flex'}}>
                         <Grid container>

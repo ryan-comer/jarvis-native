@@ -17,12 +17,18 @@ export const championsSlice = createSlice({
         },
         // Add a champion to the personal tier list
         addPersonalTierListChampion: (state, action) => {
+            if(!state.personalTierListChampions){
+                state.personalTierListChampions = []
+            }
+
             if(state.personalTierListChampions.filter(champion => champion.name === action.payload.name).length === 0){
                 state.personalTierListChampions.push(action.payload)
             }
         },
         // Remove a champion from the personal tier list
         removePersonalTierListChampion: (state, action) => {
+            if(!state.personalTierListChampions) return
+
             state.personalTierListChampions = state.personalTierListChampions.filter(champion => {
                 return champion.name !== action.payload.name
             })
