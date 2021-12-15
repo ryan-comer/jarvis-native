@@ -76,11 +76,11 @@ async function GetChampionTierListData(tier, lane){
     const response = await axios.get(URL)
 
     // Convert the data
-    for(let championId in response.data){
+    for(let championId in response.data['cid']){
         response.data['cid'][championId]['rank'] = response.data['cid'][championId][0]
         response.data['cid'][championId]['tier'] = tiers[response.data['cid'][championId][2]-1]
-        response.data['cid'][championId]['winRate'] = response.data['cid'][championId][3] / response.data['cid'][championId][4]
-        response.data['cid'][championId]['pickRate'] = response.data['cid'][championId][4] / response.data['pick']
+        response.data['cid'][championId]['winRate'] = (response.data['cid'][championId][3] / response.data['cid'][championId][4]) * 100
+        response.data['cid'][championId]['pickRate'] = (response.data['cid'][championId][4] / response.data['pick']) * 1000
         response.data['cid'][championId]['banRate'] = response.data['cid'][championId][6]
         response.data['cid'][championId]['numGames'] = response.data['cid'][championId][4]
     }

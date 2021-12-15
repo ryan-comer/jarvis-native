@@ -20,29 +20,27 @@ import {useSelector, useDispatch} from 'react-redux'
 import PersonalChampionTierList from "../components/league_of_legends/PersonalChampionTierList"
 
 function LeagueOfLegends(){
-    const champions = useSelector((state) => state.leagueChampions)
-
     const [championTierListData, setChampionTierListData] = useState(null)
     const [championData, setChampionData] = useState(null)
 
-    let currentRole = DEFAULT_LANE
-    let currentTier = PLATINUM_PLUS_TIER
+    const [currentRole, setRole] = useState(DEFAULT_LANE)
+    const [currentTier, setTier] = useState(PLATINUM_PLUS_TIER)
 
     useEffect(() => {
         init()
     })
 
     async function handleRoleChange(newRole){
-        currentRole = newRole
+        setRole(newRole)
 
-        const tierListData = await GetChampionTierListData(currentTier, currentRole)
+        const tierListData = await GetChampionTierListData(currentTier, newRole)
         setChampionTierListData(tierListData)
     }
 
     async function handleTierChange(newTier){
-        currentTier = newTier
+        setTier(newTier)
 
-        const tierListData = await GetChampionTierListData(currentTier, currentRole)
+        const tierListData = await GetChampionTierListData(newTier, currentRole)
         setChampionTierListData(tierListData)
     }
 

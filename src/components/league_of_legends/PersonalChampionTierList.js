@@ -80,7 +80,7 @@ function PersonalChampionTierList(props){
 
     function init(){
         let personalTierListChampions = champions.personalTierListChampions
-        if(personalTierListChampions.length === 0){
+        if(!personalTierListChampions){
             // Check if you can load from localstorage
             const localStorageList = JSON.parse(localStorage.getItem(PERSONAL_CHAMPION_TIER_LIST_SELECTION_KEY))
             if(localStorageList){
@@ -118,8 +118,8 @@ function PersonalChampionTierList(props){
 
     // Function to sort champions based on tier
     function sortChampions(championOne, championTwo){
-        const championOneRank = props.championTierListData['cid'][championOne.key][0]
-        const championTwoRank = props.championTierListData['cid'][championTwo.key][0]
+        const championOneRank = props.championTierListData['cid'][championOne.key]['rank']
+        const championTwoRank = props.championTierListData['cid'][championTwo.key]['rank']
 
         if(championOneRank > championTwoRank){
             return 1
@@ -240,7 +240,7 @@ function PersonalChampionTierList(props){
                         </Grid>
                     </Grid>
                 </ListItem>
-                {props.championTierListData && champions.personalTierListChampions.slice().sort(sortChampions).filter((champion) => {
+                {props.championTierListData && champions.personalTierListChampions?.slice().sort(sortChampions).filter((champion) => {
                     return props.championTierListData ? props.championTierListData['cid'][champion.key][0] != 0 : false
                 }).map((champion) => (
                     <ListItem sx={{backgroundColor: 'primary.light', borderRadius: 3, marginBottom: 1, display: 'flex'}}>
@@ -258,19 +258,19 @@ function PersonalChampionTierList(props){
                                 <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['tier'] : ''}</Typography>
                             </Grid>
                             <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['winRate'] : ''}</Typography>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['winRate'].toFixed(2) : ''}</Typography>
                             </Grid>
                             <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['pickRate'] : ''}</Typography>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['pickRate'].toFixed(2) : ''}</Typography>
                             </Grid>
                             <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['banRate'] : ''}</Typography>
+                                <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['banRate'].toFixed(2) : ''}</Typography>
                             </Grid>
                             <Grid item xs={1} justify="center" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                                 <Typography sx={{color: 'primary.contrastText'}}>{props.championTierListData ? props.championTierListData['cid'][champion.key]['numGames'] : ''}</Typography>
                             </Grid>
                             <Grid item xs></Grid>
-                            <Grid item xs={1} sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+                            <Grid item xs={1} sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'end'}}>
                                 <IconButton sx={{width: 40, height: 40}}><CloseIcon sx={{color: 'primary.contrastText'}} onClick={() => removeChampion(champion)}/></IconButton>
                             </Grid>
                         </Grid>

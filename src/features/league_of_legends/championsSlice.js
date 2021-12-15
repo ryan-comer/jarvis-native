@@ -4,7 +4,7 @@ export const championsSlice = createSlice({
     name: 'leagueChampions',
     initialState: {
         allChampions: null,
-        personalTierListChampions: []
+        personalTierListChampions: null
     },
     reducers: {
         // Set the all champions list for user selection
