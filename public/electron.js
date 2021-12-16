@@ -1,5 +1,5 @@
 // Check for updates
-require('update-electron-app')()
+const {autoUpdater} = require('electron-updater')
 
 const {app, BrowserWindow, ipcMain} = require('electron')
 const isDev = require('electron-is-dev')
@@ -27,6 +27,11 @@ const createWindow = () => {
         },
     })
     mainWindow.removeMenu()
+
+    // Check for updates
+    mainWindow.once('ready-to-show', () => {
+        autoUpdater.checkForUpdatesAndNotify()
+    })
 
     const startUrl = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`
 
