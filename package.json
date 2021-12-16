@@ -4,6 +4,7 @@
   "private": true,
   "main": "./public/electron.js",
   "homepage": "./",
+  "repository": "https://github.com/ryan-comer/jarvis-native",
   "build": {
     "appId": "jarvis.native",
     "files": [
