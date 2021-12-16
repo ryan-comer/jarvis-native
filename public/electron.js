@@ -1,3 +1,6 @@
+// Check for updates
+require('update-electron-app')()
+
 const {app, BrowserWindow, ipcMain} = require('electron')
 const isDev = require('electron-is-dev')
 const path = require('path')
