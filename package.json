@@ -13,7 +13,8 @@
       "src/CONSTANTS.js"
     ],
     "win": {
-      "icon": "./public/icon.png"
+      "icon": "./public/icon.png",
+      "publish": ["github"]
     }
   },
   "dependencies": {
