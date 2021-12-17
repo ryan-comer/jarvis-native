@@ -8,7 +8,8 @@ import {
     List,
     ListItem,
     IconButton,
-    Grid
+    Grid,
+    Button
 } from "@mui/material"
 
 import {
@@ -20,6 +21,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
+import AddIcon from '@mui/icons-material/Add'
 
 import {
     ALL_TIERS,
@@ -138,6 +140,11 @@ function PersonalChampionTierList(props){
         }
     }
 
+    // Open up the dialog to make a new group with the selected champions
+    function openCreateGroupDialog(){
+
+    }
+
     // Function to sort champions based on tier
     function sortChampions(championOne, championTwo){
         let championOneCriteria = null
@@ -241,7 +248,7 @@ function PersonalChampionTierList(props){
                         <img style={{border: selectedRole === SUPPORT_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === SUPPORT_LANE ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/supp.png'}/>
                     </Box>
                 </Box>
-                <Select autoWidth value={selectedRank} onChange={rankSelected}>
+                <Select autoWidth value={selectedRank} onChange={rankSelected} sx={{marginRight: 5}}>
                     <MenuItem value={PLATINUM_PLUS_TIER}>Platinum+</MenuItem>
                     <MenuItem value={DIAMOND_PLUS_TIER}>Diamond+</MenuItem>
                     <MenuItem value={DIAMOND2_PLUS_TIER}>Diamond 2+</MenuItem>
@@ -257,6 +264,10 @@ function PersonalChampionTierList(props){
                     <MenuItem value={BRONZE_TIER}>Bronze</MenuItem>
                     <MenuItem value={IRON_TIER}>Iron</MenuItem>
                 </Select>
+                <Button color='secondary' variant='contained' onClick={() => openCreateGroupDialog}>
+                    <AddIcon sx={{marginRight: 2}}/>
+                    Create Group
+                </Button>
             </Box>
 
             <List sx={{width: 1}}>
@@ -296,7 +307,6 @@ function PersonalChampionTierList(props){
                 </ListItem>
                 {props.championTierListData && champions.personalTierListChampions?.slice().sort(sortChampions).filter((champion) => {
                     return true
-                    //return props.championTierListData ? props.championTierListData['cid'][champion.key][0] != 0 : false
                 }).map((champion) => (
                     <ListItem sx={{backgroundColor: 'primary.light', borderRadius: 3, marginBottom: 1, display: 'flex'}}>
                         <Grid container>
