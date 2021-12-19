@@ -4,7 +4,8 @@ export const championsSlice = createSlice({
     name: 'leagueChampions',
     initialState: {
         allChampions: null,
-        personalTierListChampions: null
+        personalTierListChampions: null,
+        championGroups: null,
     },
     reducers: {
         // Set the all champions list for user selection
@@ -32,9 +33,30 @@ export const championsSlice = createSlice({
             state.personalTierListChampions = state.personalTierListChampions.filter(champion => {
                 return champion.name !== action.payload.name
             })
+        },
+        addChampionGroup: (state, action) => {
+            if(!state.championGroups){
+                state.championGroups = {}
+            }
+
+            state.championGroups = {
+                ...state.championGroups,
+                ...action.payload
+            }
+        },
+        removeChampionGroup: (state, action) => {
+            if(!state.championGroups){
+                return
+            }
+
+            delete state.championGroups[action.payload]
+        },
+        setChampionGroup: (state, action) => {
+            state.championGroups = action.payload
         }
     }
 })
 
-export const {setAllChampions, addPersonalTierListChampion, removePersonalTierListChampion, setPersonalTierListChampions} = championsSlice.actions
+export const {setAllChampions, addPersonalTierListChampion, removePersonalTierListChampion, setPersonalTierListChampions,
+    addChampionGroup, removeChampionGroup, setChampionGroup} = championsSlice.actions
 export default championsSlice.reducer

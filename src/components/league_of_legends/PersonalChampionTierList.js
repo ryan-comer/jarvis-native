@@ -9,19 +9,26 @@ import {
     ListItem,
     IconButton,
     Grid,
-    Button
+    Button,
+    FormControl,
+    InputLabel
 } from "@mui/material"
 
 import {
     addPersonalTierListChampion,
     removePersonalTierListChampion,
-    setPersonalTierListChampions
+    setPersonalTierListChampions,
+    addChampionGroup,
+    removeChampionGroup,
+    setChampionGroup
 } from '../../features/league_of_legends/championsSlice'
 
 import CloseIcon from "@mui/icons-material/Close"
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 import AddIcon from '@mui/icons-material/Add'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 import {
     ALL_TIERS,
@@ -51,8 +58,11 @@ import {
 import {useSelector, useDispatch} from 'react-redux'
 
 import React, {useState, useEffect} from 'react'
+import CreateGroupPopout from "./CreateGroupPopout"
+import ManageGroupsPopout from "./ManageGroupsPopout"
 
 const PERSONAL_CHAMPION_TIER_LIST_SELECTION_KEY = "PERSONAL_CHAMPION_TIER_LIST_SELECTION"
+const CHAMPION_GROUPS_SELECTION_KEY = "CHAMPION_GROUPS_SELECTION_KEY"
 
 // Used to map tier index to a tier letter
 const tiers = [
@@ -88,6 +98,10 @@ function PersonalChampionTierList(props){
 
     const [selectedRole, setSelectedRole] = useState(null)
     const [selectedRank, setSelectedRank] = useState(PLATINUM_PLUS_TIER)
+    const [selectedGroup, setSelectedGroup] = useState(null)
+
+    const [showCreateGroup, setShowCreateGroup] = useState(false)
+    const [showManageGroups, setShowManageGroups] = useState(false)
 
     const champions = useSelector((state) => state.leagueChampions)
 
@@ -103,6 +117,17 @@ function PersonalChampionTierList(props){
             }
         }else{
             localStorage.setItem(PERSONAL_CHAMPION_TIER_LIST_SELECTION_KEY, JSON.stringify(personalTierListChampions))
+        }
+
+        let championGroups = champions.championGroups
+        if(!championGroups){
+            // Check if you can load from localstorage
+            const localStorageGroups = JSON.parse(localStorage.getItem(CHAMPION_GROUPS_SELECTION_KEY))
+            if(localStorageGroups){
+                dispatch(setChampionGroup(localStorageGroups))
+            }
+        }else{
+            localStorage.setItem(CHAMPION_GROUPS_SELECTION_KEY, JSON.stringify(championGroups))
         }
     }
 
@@ -142,7 +167,16 @@ function PersonalChampionTierList(props){
 
     // Open up the dialog to make a new group with the selected champions
     function openCreateGroupDialog(){
+        if(champions.personalTierListChampions?.length > 0){
+            setShowCreateGroup(true)
+        }
+    }
 
+    // Open up a dialog to manage the groups
+    function openManageGroupsDialog(){
+        if(champions.championGroups && (Object.keys(champions.championGroups).length > 0)){
+            setShowManageGroups(true)
+        }
     }
 
     // Function to sort champions based on tier
@@ -184,6 +218,43 @@ function PersonalChampionTierList(props){
         }else{
             return 0
         }
+    }
+
+    // Create a new group for the current champions
+    function createGroup(groupName){
+        if(champions.championGroups && Object.keys(champions.championGroups).includes(groupName)){
+            console.log(`${groupName} already exists`)
+            return
+        }
+
+        const newGroup = {}
+        newGroup[groupName] = champions.personalTierListChampions.map((champion => champion.key))
+        
+        dispatch(addChampionGroup(newGroup))
+
+        setShowCreateGroup(false)
+    }
+
+    // Group selected by the user
+    function groupSelected(e){
+        const groupName = e.target.value
+
+        // Set the tier list champions
+        const newTierListChampions = champions.championGroups[groupName].map(championId => {
+            return Object.values(props.championData).filter(champion => champion.key === championId)[0]
+        })
+        dispatch(setPersonalTierListChampions(newTierListChampions))
+    }
+
+    // Edit Group
+    function editGroup(){
+
+    }
+
+    // Delete Group
+    function deleteGroup(groupName){
+        dispatch(removeChampionGroup(groupName))
+        setSelectedGroup(null)
     }
 
     return (
@@ -230,7 +301,7 @@ function PersonalChampionTierList(props){
                 )}
             />
 
-            <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <Box sx={{display: 'flex', alignItems: 'center', marginBottom: 5}}>
                 <Box sx={{mr: 3}} component='span'>
                     <Box component='span' sx={{'&:hover': {cursor: 'pointer'}}} onClick={() => roleSelected(TOP_LANE)}>
                         <img style={{border: selectedRole === TOP_LANE ? '2px solid gray' : 'none', borderRadius: '5px', padding: selectedRole === TOP_LANE ? '2px' : '4px'}} src={process.env.PUBLIC_URL + '/images/league_of_legends/top.png'}/>
@@ -264,9 +335,24 @@ function PersonalChampionTierList(props){
                     <MenuItem value={BRONZE_TIER}>Bronze</MenuItem>
                     <MenuItem value={IRON_TIER}>Iron</MenuItem>
                 </Select>
-                <Button color='secondary' variant='contained' onClick={() => openCreateGroupDialog}>
+            </Box>
+            <Box sx={{display: 'flex', alignItems: 'end'}}>
+                <FormControl variant="standard" sx={{minWidth: 200, marginRight: 2}}>
+                    <InputLabel id="label-group-id">Group</InputLabel>
+                    <Select value={selectedGroup} onChange={groupSelected} label="Group" labelId="label-group-id">
+                        {champions.championGroups && Object.keys(champions.championGroups).map(groupName => (
+                            <MenuItem value={groupName}>
+                                <Typography>{groupName}</Typography>
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <Button color='secondary' variant='contained' onClick={() => openCreateGroupDialog()} sx={{marginRight: 2}}>
                     <AddIcon sx={{marginRight: 2}}/>
-                    Create Group
+                    New Group
+                </Button>
+                <Button color='secondary' variant='outlined' onClick={() => openManageGroupsDialog()} sx={{marginRight: 2}}>
+                    Manage Groups
                 </Button>
             </Box>
 
@@ -342,6 +428,37 @@ function PersonalChampionTierList(props){
                     </ListItem>
                 ))}
             </List>
+
+            <Box sx={{
+                display: showCreateGroup ? 'block' : 'none',
+                position: 'fixed',
+                left: '35%',
+                top: '40%',
+                right: '35%',
+                backgroundColor: 'white',
+                borderSize: 1,
+                borderStyle: 'solid',
+                padding: 3,
+                borderRadius: 3
+            }}>
+                <CreateGroupPopout onCreate={(groupName) => createGroup(groupName)} onCancel={() => setShowCreateGroup(false)}/>
+            </Box>
+            <Box sx={{
+                display: showManageGroups ? 'block' : 'none',
+                position: 'fixed',
+                left: '35%',
+                top: '40%',
+                right: '35%',
+                backgroundColor: 'white',
+                borderSize: 1,
+                borderStyle: 'solid',
+                padding: 3,
+                borderRadius: 3
+            }}>
+                <ManageGroupsPopout groups={champions.championGroups} 
+                onClose={() => setShowManageGroups(false)}
+                onDelete={(groupName) => deleteGroup(groupName)}/>
+            </Box>
         </Box>
     )
 }
