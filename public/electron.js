@@ -30,6 +30,7 @@ const createWindow = () => {
 
     // Check for updates
     mainWindow.once('ready-to-show', () => {
+        mainWindow.show()
         autoUpdater.checkForUpdatesAndNotify()
     })
 
@@ -40,7 +41,6 @@ const createWindow = () => {
 
     mainWindow.loadURL(startUrl)
 
-    mainWindow.once('ready-to-show', () => mainWindow.show())
     mainWindow.on('closed', () => {
         mainWindow = null
     })
