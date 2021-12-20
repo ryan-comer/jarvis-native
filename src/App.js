@@ -1,7 +1,8 @@
-import Index from './pages/Index';
-import LeagueOfLegends from './pages/LeagueOfLegends';
+import Home from './pages/Home'
+import LeagueOfLegends from './pages/LeagueOfLegends'
+import Music from './pages/Music'
 import TopBar from './components/TopBar'
-import './App.css';
+import './App.css'
 
 import CssBaseline from '@mui/material/CssBaseline'
 
@@ -13,6 +14,12 @@ import {
 import {
   createTheme
 } from '@mui/material/styles'
+
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route
+} from 'react-router-dom'
 
 function App() {
   const theme = createTheme({
@@ -40,7 +47,11 @@ function App() {
       <CssBaseline/>
       <TopBar/>
       <Box sx={{marginTop:8}}>
-        <LeagueOfLegends/>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/league_of_legends' element={<LeagueOfLegends/>}/>
+          <Route path='/music' element={<Music/>}/>
+        </Routes>
       </Box>
     </ThemeProvider>
   );

@@ -6,7 +6,8 @@ import {
     Typography,
     IconButton,
     Button,
-    Box
+    Box,
+    Link
 } from '@mui/material'
 
 import {
@@ -20,11 +21,22 @@ import CloseIcon from '@mui/icons-material/Close'
 import SquareIcon from '@mui/icons-material/CropSquare'
 import RemoveIcon from '@mui/icons-material/Remove'
 
+import {
+    useLocation
+} from 'react-router-dom'
+
 const pages = [
     {
+        name: 'Home',
+        route: '/'
+    },
+    {
         name: 'League of Legends',
-        route: 'league_of_legends',
-        selected: false
+        route: '/league_of_legends'
+    },
+    {
+        name: 'Music',
+        route: '/music'
     }
 ]
 
@@ -32,6 +44,9 @@ function TopBar(){
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    const location = useLocation()
+    console.log(location)
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -47,11 +62,6 @@ function TopBar(){
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    // Go to the new route
-    const goToRoute = (page) => {
-
-    }
 
     function minimizeApplication(){
         window.ipcRenderer.send(MINIMIZE_WINDOW_IPC)
@@ -77,15 +87,21 @@ function TopBar(){
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant='h4' component="div" sx={{mr: 5}}>Jarvis</Typography>
+
+                <Link className='titlebar-button' href='/' underline='none' variant='h4' sx={{mr: 5}} color='primary.contrastText'>
+                    Jarvis
+                </Link>
 
                 <Box sx={{display: {xs: 'none', md: 'flex'}}}>
                     {pages.map((page) => (
                         <Button
                             className='titlebar-button'
                             key={page.name}
-                            onClick={() => goToRoute(page)}
-                            sx={{my: 2, color: 'white', display: 'block'}}
+                            href={page.route}
+                            sx={{mx: 2, color: 'white', display: 'block',
+                                borderRadius: 0,
+                                borderBottom: (location.pathname === page.route) ? '1px solid white' : ''
+                            }}
                         >
                             {page.name}
                         </Button>
