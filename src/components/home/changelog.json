@@ -1,0 +1,12 @@
+[
+    {
+        "timestamp": 1640558031,
+        "version": "v0.11",
+        "content": "<b>General</b>\n\t- Added Home and Music pages.\n\t- Added changelog to home page"
+    },
+    {
+        "timestamp": 1640456031,
+        "version": "v0.1",
+        "content": "<b>League of Legends</b>\n\t- Added champion groups. Save the currently selected champions to a named group to choose them later."
+    }
+]

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {Link} from 'react-router-dom'
 
 import {
     AppBar,
@@ -6,8 +7,7 @@ import {
     Typography,
     IconButton,
     Button,
-    Box,
-    Link
+    Box
 } from '@mui/material'
 
 import {
@@ -88,23 +88,28 @@ function TopBar(){
                     <MenuIcon />
                 </IconButton>
 
-                <Link className='titlebar-button' href='/' underline='none' variant='h4' sx={{mr: 5}} color='primary.contrastText'>
-                    Jarvis
-                </Link>
+                <Box className='titlebar-button' sx={{marginRight: 2}}>
+                    <Link to='/' style={{color: 'white', textDecoration: 'none'}}>
+                        <Typography variant="h5">
+                            Jarvis
+                        </Typography>
+                    </Link>
+                </Box>
 
                 <Box sx={{display: {xs: 'none', md: 'flex'}}}>
                     {pages.map((page) => (
-                        <Button
+                        <Box
                             className='titlebar-button'
                             key={page.name}
-                            href={page.route}
                             sx={{mx: 2, color: 'white', display: 'block',
                                 borderRadius: 0,
                                 borderBottom: (location.pathname === page.route) ? '1px solid white' : ''
                             }}
                         >
-                            {page.name}
-                        </Button>
+                            <Link to={page.route} style={{color: 'white', textDecoration: 'none'}}>
+                                {page.name}
+                            </Link>
+                        </Box>
                     ))}
                 </Box>
 
