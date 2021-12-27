@@ -5,9 +5,9 @@ import {
 
 import ChangelogItem from './ChangelogItem'
 
-function Changelog(props){
-    const changelog = require('./changelog.json')
+const changelog = require('../../changelog.json')
 
+function Changelog(props){
     return (
         <Box>
             <Box sx={{marginBottom: 1}}>

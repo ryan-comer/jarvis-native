@@ -1,5 +1,4 @@
 import * as React from 'react'
-import {Link} from 'react-router-dom'
 
 import {
     AppBar,
@@ -22,6 +21,7 @@ import SquareIcon from '@mui/icons-material/CropSquare'
 import RemoveIcon from '@mui/icons-material/Remove'
 
 import {
+    Link,
     useLocation
 } from 'react-router-dom'
 
@@ -46,7 +46,6 @@ function TopBar(){
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const location = useLocation()
-    console.log(location)
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);

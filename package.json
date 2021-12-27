@@ -10,7 +10,8 @@
     "files": [
       "build/**/*",
       "node_modules/**/*",
-      "src/CONSTANTS.js"
+      "src/CONSTANTS.js",
+      "src/changelog.json"
     ],
     "win": {
       "icon": "./public/icon.png",

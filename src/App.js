@@ -16,7 +16,6 @@ import {
 } from '@mui/material/styles'
 
 import {
-    BrowserRouter as Router,
     Routes,
     Route
 } from 'react-router-dom'
@@ -43,17 +42,17 @@ function App() {
   })
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline/>
-      <TopBar/>
-      <Box sx={{marginTop:8}}>
-        <Routes>
-          <Route path='/' element={<Home/>}/>
-          <Route path='/league_of_legends' element={<LeagueOfLegends/>}/>
-          <Route path='/music' element={<Music/>}/>
-        </Routes>
-      </Box>
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline/>
+        <TopBar/>
+        <Box sx={{marginTop:8}}>
+          <Routes>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/league_of_legends' element={<LeagueOfLegends/>}/>
+            <Route path='/music' element={<Music/>}/>
+          </Routes>
+        </Box>
+      </ThemeProvider>
   );
 }
 
